@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Internal Marks Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    
+    th, td {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(255, 5, 5);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <input type="submit" class="logout-btn" value="Home"  onclick="location.href='/logout/'" ></button>
+  <table>
+    <thead>
+      <tr>
+        <th>Subject Name</th>
+        <th>Semester</th>
+        <th>UnitTest Mark 1</th>
+        <th>UnitTest Mark 2</th>
+        <th>UnitTest Mark 3</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      {%  for i in formss %}
+      <tr>
+        <td>{{i.subject}}</td>
+        <td>{{i.sem}}</td>
+        <td>{{i.unit1}}</td>
+        <td>{{i.unit2}}</td>
+        <td>{{i.unit3}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

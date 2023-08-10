@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Table Example</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			padding: 8px;
+			border-bottom: 1px solid #ddd;
+			text-align: center;
+		}
+		th {
+			background-color: #4CAF50;
+			color: white;
+		}
+		tr:hover {
+			background-color: #f5f5f5;
+		}
+		.logout-btn {
+    position: relative;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(233, 6, 6);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 1; /* make sure the button is above the table */
+    float: right; /* align button to the right */
+}
+
+
+
+	</style>
+</head>
+<body>
+	<input type="submit" class="logout-btn" value="Home"  onclick="location.href='/logout/'" ></button>
+	<form method="POST">
+		{% csrf_token %}
+		
+	<table>
+		<thead>
+			<tr>
+				<th>Acdemic year</th>
+				<th>file_name</th>
+				<th>event_detail</th>
+				<th>from_date</th>
+				<th>to_date</th>
+				<th>download</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			{% for i in form %}
+			<tr>
+				<td>
+					{{i.academic}}
+				</td>
+				<td>
+					{{i.file_name}}
+				</td>
+				<td>
+					{{i.title}}
+				</td>
+				<td>
+					{{i.from_date}}
+				</td>
+				<td>
+					{{i.to_date}}
+				</td>
+				<td>
+					<button type="submit" id="{{ i.ids }}">Download</button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</form>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+					xhr.setRequestHeader("X-CSRFToken", csrftoken);
+				}
+			});
+			
+			$('button').click(function(event) {
+				event.preventDefault();
+				var buttonId = $(this).attr('id');
+				var fileName = $(this).closest('tr').find('td:nth-child(2)').text();
+				
+				$.ajax({
+					type: "POST",
+					url: "/all_files/",
+					data: {
+						'fileName': fileName
+					},
+					xhrFields: {
+						responseType: 'blob'
+					},
+					success: function(response) {
+						
+						var blob = new Blob([response], {type: 'application/octet-stream'});
+						var url = URL.createObjectURL(blob);
+						var link = document.createElement('a');
+						link.href = url;
+						link.download = fileName+".pdf";
+						document.body.appendChild(link);
+						link.click();
+						document.body.removeChild(link);
+					},
+					error: function() {
+						alert("Please contact administrator");
+					}
+				});
+			});
+		});
+	</script>
+	
+</body>
+</html>

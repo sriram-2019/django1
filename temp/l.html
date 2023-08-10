@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login form</title>
+        <style>
+        
+body {
+    background-image: url("{% static 'C:/Users/srira/OneDrive/Desktop/college/css/image/s.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+<body>
+    <div class="container">
+        <form class="form" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="inputField">
+                <h1>Staff login</h1>
+                <input type="text" name="staff_id" autocomplete="off" placeholder="Enter Employee-id" required/>
+                <input type="password" name="staff_pass" placeholder="Enter password" required/>
+            </div>
+            <div class="btn">
+                <input type="submit" value="Log-in" id="staff" name="login"/>
+                <a href="#"></a><input type="button" onclick="location.href='/staff_reg/'" value="sign-up"  name="staff_sub"/></a>
+            </div>
+        </form>
+        <form action="#" class="form" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="inputField">
+                <h1>Students login</h1>
+                <input type="text" placeholder="Enter roll_no"  name="student_name"/>
+                <input type="password" placeholder="Enter password" name="student_password" />
+            </div>
+            <div class="btn">
+                <input type="submit" value="Log-in" name="stu_log" id="student" />
+                <a href="/stu/"><input type="button" value="sign-up" name="sign_up"  /></a>
+            </div>
+        </form>
+    </div>
+    <link rel="stylesheet" type="text/css" href="{%  static 'C:/Users/srira/OneDrive/Desktop/college/css/l.css' %}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       
+         $(document).ready(function () {
+              var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+                });
+        
+        $("#staff").click(function(event){
+            event.preventDefault();
+            $.ajax({
+                type:"POST",
+                url:"/staff_login/",
+                data:$('form').serialize(),
+                success: function(data){
+                    if (data.message=='success'){
+                        window.location.href='staff_re';
+                    }
+                    else{
+                        alert(data.message);
+                    }
+                },
+                error:function(){
+                    alert("contact the administrator");
+                }
+            });
+        });
+        $('#student').click(function (event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+            url: "/my_view/",
+            type: "POST",
+            dataType: "json",
+            data: $('form').serialize(),
+            success: function(data) {
+                if(data.message=='success'){
+                    window.location.href = 'Button.html';
+                }else{
+                    alert(data.message);
+                }
+                
+                },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+});
+
+            
+        });
+    });
+    
+    </script>
+</body>
+</html>

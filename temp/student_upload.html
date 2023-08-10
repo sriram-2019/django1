@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File upload</title>
+    <style>
+        form{
+            text-align: center;
+        }
+        #btn{
+            margin:20px;
+            padding:15px;
+            font-weight: bold;
+            outline:none;
+            border:none;
+            background-color: slateblue;
+            border-radius: 3px;
+            color:white;
+            text-transform: uppercase;
+        }
+        #btn:hover{
+            background-color: rgb(69, 47, 212);
+            cursor: pointer;
+        }
+        label{
+            font-size: 20px;
+            text-align: left;
+        }
+        tr td{
+            margin-top:20px;
+        }
+        tr td input{
+            background-color: rgb(245, 245, 245);
+            padding: 10px;
+            border-radius: 20px;
+            outline: none;
+            border: 1px solid black;
+            margin:10px 5px;
+            font-size: medium;
+            color:rgb(19, 18, 18);
+            text-transform: uppercase;
+            border-color: black;
+        }
+        select{
+            padding:10px;
+            font-size:15px;
+            cursor: pointer;
+            border-radius:5px;
+            margin:5px 0;
+        }
+        select:focus{
+            border:2px solid green;
+        }
+        option{
+            cursor:pointer;
+            padding:10px;
+        }
+        #logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: rgb(251, 8, 8);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Welcome user</h1>
+    <button id="logout-btn" onclick="location.href='/logout/'">Home</button>
+    <form action="/" method="POST"  enctype="multipart/form-data">
+      
+        {% csrf_token %}
+        <table cell-spacing="20" cell-padding="20" style="margin:auto;">
+            <tr>
+                <td><label for="eventName">Event-type:</label></td>
+                <td><select name="event-name" id="eventName">
+                        <option value="project presentation">Project presentation</option>
+                        <option value="paper presentation">Paper presentation</option>
+                        <option value="hackathon">Hackathon</option>
+                        <option value="quiz">Quiz/seminar/webinar/workshop</option>
+                        <option value="other">Other events</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="title">Paper/Project/Event title:</label></td>
+                <td><input name="title" placeholder="Title" id="title"/></td>
+            </tr>
+            <tr>
+                <td><label for="eventOrg">Event-organization:</label></td>
+                <td><input name="event-org" placeholder="Event-organization" id="eventOrg"/></td>
+            </tr>
+            <tr>
+                <td><label for="Fromdate">From-date:</label></td>
+                <td><input type="date" id="Fromdate" name="fromdate"/></td>
+            </tr>
+            <tr>
+                <td><label for="Todate">To-date:</label></td>
+                <td><input type="date" id="Todate" name="todate"/></td>
+            </tr>
+        </table>
+        <div><input id="btns" style="background-color: white;color:black;" type="file" accept=".pdf" name="file_name" multiple/></div>
+        <input id="btn" type="submit" value="Upload"/>
+    </form> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>        
+
+    <script>
+        $(document).ready(function(){
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+                });
+            $("#btn").click(function(event){
+                event.preventDefault();
+                var ptitle=$('input[name="title"]').val();
+                var fromdate=$('input[name="fromdate"]').val();
+                var todate=$('input[name="todate"]').val();
+                var  org=$('input[name="event-org"]').val();
+                var selects=document.getElementsByName("event-name")[0];
+                var sel=selects.value;
+                var file=$('#btns').prop('files')[0];
+                if(fromdate==''||todate==''||org==''||sel==''||file==undefined){
+                    alert("fill all the detail");
+                }
+                else if(sel=="other" && ptitle==''){ 
+                    alert("if other is choosed enter the title");
+                }
+                else{
+                    form_data=new FormData();
+                    form_data.append('title',ptitle);
+                    form_data.append('fromdate',fromdate);
+                    form_data.append('todate',todate);
+                    form_data.append('file_name',file);
+                    form_data.append('event-org',org);
+                    form_data.append('event-name',sel)
+                    $.ajax({
+                        type:"POST",
+                        url:"/upload/",
+                        data:form_data,
+                        contentType:false,
+                        processData:false,
+                        success: function(data){
+                            if(data.message){
+                                alert(data.message);
+                            }
+                            
+                        },
+                        error:function(){
+                            alert("please contact admin an error occoured in the program");
+                        },
+                    });
+                }
+        });
+    });
+    </script>
+</body>;

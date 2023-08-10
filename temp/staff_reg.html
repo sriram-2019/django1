@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<link rel="stylesheet" type="text/css" href="{%   static 'C:/Users/srira/OneDrive/Desktop/college/css/staff_style.css'   %}"/>
+</head>
+<body>
+    <div class="container">
+        <form action="#" method="post" name="staff">
+            {% csrf_token %}
+            <table cellspacing="5" cellpadding="5">
+                <tr>
+                    <td><label for="ID">Enter staff-id:</label></td>
+                    <td><input type="text" id="ID" name="staffid"/></td>
+                </tr>
+                <tr>
+                    <td><label for="name">Enter your name:</label></td>
+                    <td><input type="text" id="name" name="staffname"/></td>
+                </tr>
+                <tr>
+                    <td><label for="mailid">Enter email:</label></td>
+                    <td><input type="email" id="mailid" name="staffmail"/></td>
+                </tr>
+                <tr>
+                    <td><label for="dept">Select department:</label></td>
+                    <td>
+                        <select id="dept" name="staffdept">
+                            <option value="cse">CSE</option>
+                            <option value="it">IT</option>
+                            <option value="ece">ECE</option>
+                            <option value="eee">EEE</option>
+                            <option value="mech">Mechanical</option>
+                            <option value="civil">Civil</option>
+                        </select>    
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="password">Enter your password:</label></td>
+                    <td><input type="password" id="password"  name="staffpassword"/></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="pass">Confirm your password:</label></td>
+                    <td><input type="password" id="pass" name="staffconfirm"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" >
+                        <input type="checkbox" id="passField" name="showpass" onclick="show(this)"/>
+                        <label for="passField">Show password</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="SUBMIT" name="staffs" id="staffsub"/></td>
+                    <td style="text-align:right;"><input type="reset" value="CLEAR"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function show(that){
+            let x=document.forms["staff"]["staffPassword"];
+            let y=document.forms["staff"]["staffConfirm"];
+            if(that.checked)
+                x.type=y.type="text";
+            else
+                x.type=y.type="password";
+        }
+       $(document).ready(function () {
+        $('#staffsub').click(function (event) {
+            event.preventDefault();
+            var staffid = $('input[name="staffid"]').val();
+            var staffname = $('input[name="staffname"]').val();
+            var staffemail = $('input[name="staffmail"]').val();
+            var staffpassword = $('input[name="staffpassword"]').val();
+            var staffconfirm = $('input[name="staffconfirm"]').val();
+            const emailRegex = /\S+@\S+\.\S+/;
+            if (staffid== '') {
+                alert('Please enter a staff id');
+            }
+            else if(staffname==''){
+                alert("please enter a staff name");
+            }
+            else if(staffemail==''){
+                alert("please enter a staff email");
+            }
+            else if(staffpassword==''){
+                alert("please enter the password");
+            }
+            else if(staffpassword.length<4){
+                    alert("password length should greater than 4");
+            }
+            else if(staffconfirm==''){
+                alert("please enter the confirm password");
+            }
+            else if(staffconfirm!=staffpassword){
+                alert("Password and confirm password is not equal");
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/staffsuccess/',
+                    data: $('form').serialize(),
+                    success: function (data) {
+                        alert(data.message);
+                        window.location.href="hel";
+                    },
+                    error: function () {
+                        alert('There was an error submitting the form');
+                    }
+                });
+            }
+        });
+    });
+        
+       
+
+    </script>
+</body>
+</html>

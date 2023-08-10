@@ -1,0 +1,118 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    user-select: none;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+body{
+    background-color: rgb(167, 179, 204);
+    text-align: center;
+}
+.container{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin:20px auto;
+}
+h1{
+    width:100%;
+    color:whitesmoke;
+    font-size:3em;
+    letter-spacing: 3px;;
+}
+.form{
+
+    margin :30px auto;
+}
+.inputFields{
+    display:flex;
+    flex-direction: column;
+    margin:10px auto;
+    padding:50px;
+    background-color: rgb(15, 14, 14);
+    border-radius:20px;
+}
+input{
+    width:100%;
+    padding:15px;
+    margin:15px auto;
+    font-weight:bold;
+    font-size :20px;
+    border:none;
+    border-radius: 25px;
+    color:rgb(41, 38, 36);
+}
+input:focus{
+    outline:none;
+    border:3px solid rgb(43, 26, 82);
+    box-shadow:inset 2px 3px 3px grey;
+}
+.inputFields>div{
+    display:flex;
+    width:100%;
+    align-items: center;
+    font-weight:bold;
+    justify-content: space-around;
+}
+label{
+    font-size:20px;
+    color:white;
+}
+select{
+    width:100%;
+    padding:15px;
+    margin:15px auto;
+    font-weight:bold;
+    font-size :20px;
+    border:none;
+    text-align: center;
+    border-radius: 10px;
+    color:rgb(41, 38, 36);
+    cursor: pointer;
+}
+select:focus{
+    outline:none;
+    border:2px solid rgb(36, 158, 206);
+    box-shadow:inset 2px 3px 3px grey;
+}
+small{
+    visibility: hidden;
+    text-align: left;
+    color:red;
+}
+button{
+    padding:10px;
+    margin-top: 30px;
+    font-weight:bold;
+    font-size:25px;
+    border-radius: 15px;
+    border:none;
+    background-color: coral;
+}
+button:hover{
+    cursor: pointer;
+    background-color: rgb(196, 116, 87);
+    transform:translateY(-5px);
+    transition-duration: .5s;
+}
+button:focus{
+    background-color: rgb(143, 100, 85);
+}
+#polytechnic{
+    display: none;
+    flex-direction: column;
+}
+#twelevth{
+    flex-direction: column;
+    display: none; 
+}
+input.error {
+    border: 1px solid red;
+  }
+small.smalls{
+    visibility: hidden;
+    text-align: left;
+    color:red;
+}

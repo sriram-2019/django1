@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 4rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .btn-admin {
+            background-color: #007bff;
+        }
+
+        .btn-admin:hover {
+            background-color: #0062cc;
+        }
+
+        .btn-customer {
+            background-color: #28a745;
+        }
+
+        .btn-customer:hover {
+            background-color: #1e7e34;
+        }
+
+        /* new code for logout button */
+        .logout-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 1rem;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
+            padding: 1rem;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <button type="button" name="logout" class="btn-logout">Home</button>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <h1>Download Selection</h1>
+        <div class="btn-container">
+            <button type="submit" name="select_date" class="btn btn-admin">select by date</button>
+            <button type="submit" name="select_all" class="btn btn-customer">Display All data</button>
+        </div>
+    </form>
+</body>
+</html>

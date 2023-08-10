@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 4rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .btn-admin {
+            background-color: #007bff;
+        }
+
+        .btn-admin:hover {
+            background-color: #0062cc;
+        }
+
+        .btn-customer {
+            background-color: #28a745;
+        }
+
+        .btn-customer:hover {
+            background-color: #1e7e34;
+        }
+        #logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: rgb(240, 7, 7);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        
+       
+    </style>
+</head>
+<body>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <button id="logout-btn" onclick="location.href='/logouts/staff_re'">Home</button>
+        <h1>Welcome !!</h1>
+        <div class="btn-container">
+            <button type="submit" name="Internal" class="btn btn-admin">Internal</button>
+            <button type="submit" name="Assessment" class="btn btn-customer">Assessment</button>
+        </div>
+        <div class="btn-container">
+            <button type="submit" name="unit test" class="btn btn-admin">Unit Test</button>
+
+        </div>
+    </form>
+
+</body>
+</html>

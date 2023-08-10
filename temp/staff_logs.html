@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 4rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .btn-admin {
+            background-color: #007bff;
+        }
+
+        .btn-admin:hover {
+            background-color: #0062cc;
+        }
+
+        .btn-customer {
+            background-color: #28a745;
+        }
+
+        .btn-customer:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-upload {
+            background-color: #ffc107;
+        }
+
+        .btn-upload:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-download {
+            background-color: #17a2b8;
+        }
+
+        .btn-download:hover {
+            background-color: #117a8b;
+        }
+        #logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: rgb(243, 9, 9);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="logout-btn" name="logouts" onclick="location.href='/logouts/'">Logout</button>
+    <form method="POST">
+
+        {% csrf_token %}
+        <h1>Welcome !!</h1>
+        <div class="btn-container">
+            <div class="btn-row">
+                <button type="submit" name="upload" class="btn btn-admin">Upload</button>
+                <button type="submit"  name="Download" class="btn btn-customer">Download</button>
+            </div>
+            <div class="btn-row">
+                <button type="submit" name="student_cert" class="btn btn-upload">Student_certs</button>
+                <button type="submit" name="edit" class="btn btn-download">student_academics</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

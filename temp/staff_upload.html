@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Staff upload</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+}
+
+h1 {
+background-color: #336699;
+color: white;
+padding: 20px;
+text-align: center;
+margin: 0;
+}
+
+form {
+margin: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+label {
+display: block;
+margin-bottom: 10px;
+font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="file"] {
+display: block;
+margin-bottom: 20px;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
+width: 100%;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+select {
+display: block;
+margin-bottom: 20px;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
+width: 100%;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+input[type="submit"] {
+background-color: #336699;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+
+input[type="submit"]:hover {
+background-color: #265580;
+}
+#logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: rgb(245, 241, 241);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+</style>
+</head>
+<body>
+<h1>Upload !</h1>
+<button id="logout-btn" onclick="location.href='/logouts/staff_re'">Home</button>
+<form method="POST">
+    {% csrf_token %}
+<label for="Title">Event_Title:</label>
+<select id="names" name="names">
+  <option value="fdp">FDP</option>
+  <option value="paper">Paper</option>
+<option value="project">Project</option>
+<option value="seminar">Seminar</option>
+<option value="webinar">Webinar</option>
+<option value="workshop">Workshop</option>
+</select>
+<label for="journal" name="jour" id="journal_label">Name :</label>
+<input type="text"  name="journal" required>
+<label for="title" id="titel">Title :</label>
+<input type="text" name="title" required>
+<label id="agency">Total Amount:</label>
+<input id="agent" type="text" name="amount">
+<label id="att"> Attended by:</label>
+<label id="stu">student</label>
+<input name="rad1" type="radio" value="student">
+<label id="staff">staff</label>
+<input type="radio" name="rad1" value="staff">
+<label  id="stus">No of student Attended</label>
+<input type="text" name="student" >
+<label id="staffs">No of staff Attended</label>
+<input type="text" name="staffs" >
+<label id="years">Year</label>
+<select id="yer" name="year">
+  <option value="first">first</option>
+  <option value="second">second</option>
+<option value="third">third</option>
+<option value="fourth">fourth</option>
+</select>
+<label id="depts">Dept</label>
+<select id="yr" name="dept">
+  <option value="cse">CSE</option>
+  <option value="it">IT</option>
+  <option value="civil">CIVIL</option>
+  <option value="ece">ECE</option>
+<option value="eee">EEE</option>
+<option value="mech">MECH</option>
+</select>
+<label id="sub">Submission Date
+</label>
+<input type="date" id="subss" name="subs" required>
+<label for="host">Name of the host/college:</label>
+<input type="text" id="host" name="host" >
+
+<label id="from" for="from_date">From date:</label>
+<input type="date"  id="from_date" name="from_date" required>
+
+<label id="to" for="to_date">To date:</label>
+<input type="date" id="to_date" name="to_date" required>
+
+<label for="file_input">File input:</label>
+<input type="file" id="file_inputs" name="file_input" required>
+
+<input type="submit" value="Submit" name="sub" id="submited">
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+       
+       
+  $(document).ready(function() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+                });
+                $('#names').change(function() {
+    var selectedValue = $(this).val();
+    if (selectedValue == 'paper') {
+      $('#journal_label').text('Name of the paper or journal:');
+      $('#titel').hide();
+      $('#att').hide();
+      $("input[name='title']").hide();
+      $('#depts').hide();
+      $('#sub').show();
+      $('#from').hide();
+      $('#to').hide();
+      $('#from_date').hide();
+      $('#to_date').hide();
+      $('#subss').show();
+      $('#years').hide();
+      $("#yr").hide();
+      $("#yer").hide();
+      $('#stu').text('Title').hide();
+      $('#staff').text('Title').hide();
+      $("input[name='rad1']").hide(); // Show the input box
+      $("input[name='rad1']").hide(); 
+      $('#staffs').text('Title').hide();
+      $("input[name='staffs']").hide();// Show the input box
+      $('#stus').text('Title').hide();
+      $("input[name='student']").hide();// Show the input box
+      $("#agency").show();
+      $("#agent").show();
+    } else if (selectedValue == 'project') {
+      $('#journal_label').text('Name of the project:');
+      $('#titel').text('Title').hide();
+      $("#agency").hide();
+      $("#agent").hide();
+      $('#from').show();
+      $('#to').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $('#depts').hide();
+      $('#years').hide();
+      $("#yr").hide();
+      $("#yer").hide();
+      $('#sub').hide();
+      $('#subss').hide();
+      $('#att').hide();
+      $("input[name='title']").hide();
+      $('#stu').text('student').hide();
+      $('#staff').text('staff').hide();
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").hide(); // Show the input box
+      $("input[name='rad1']").hide();
+      $('#staffs').text('Title').hide();
+      $("input[name='staffs']").hide();// Show the input box
+      $('#stus').text('Title').hide();
+      $("input[name='student']").hide(); // Show the input box
+    } else if (selectedValue == 'fdp') {
+      $('#journal_label').text('Name of the FDP:');
+      $('#titel').text('Title').hide();
+      $('#depts').hide();
+      $('#sub').hide();
+      $('#att').show();
+      $('#from').show();
+      $('#to').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $('#subss').hide();
+      $("#agency").hide();
+      $("#agent").hide();
+      $('#years').hide();
+      $("#yr").hide();
+      $("#yer").hide();
+      $("input[name='title']").hide();
+      $('#stu').text('student').show();
+      $('#staff').text('staff').show();
+    
+      $("input[name='rad1']").show(); // Show the input box
+      $("input[name='rad1']").show();
+      $('#staffs').text('Title').hide();
+      $("input[name='staffs']").hide();// Show the input box
+      $('#stus').text('Title').hide();
+      $("input[name='student']").hide();
+    } else if (selectedValue == 'seminar') {
+      $('#journal_label').text('Presented/submitted:');
+      $('#titel').text('Title of seminar').hide();
+      $('#stu').text('student').show();
+      $("input[name='title']").hide();
+      $('#sub').hide();
+      $('#subss').hide();
+      $('#from').show();
+      $('#to').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $("#agency").hide();
+      $('#att').show();
+      $("#agent").hide();
+      $('#staff').text('staff').show();
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").show(); // Show the input box
+      $("input[name='rad1']").show();
+      $("input[name='staffs']").show(); 
+      $('#depts').hide();
+      $('#years').hide();
+      $("#yr").hide();
+      $("#yer").hide();
+      $('#staffs').text('Title').hide();
+      $("input[name='staffs']").hide();// Show the input box
+      $('#stus').text('Title').hide();
+      $("input[name='student']").hide();// Show the input box
+    } else if (selectedValue == 'webinar') {
+      $('#journal_label').text('Presented/submitted:');
+      $('#titel').text('Attended By').hide();
+      $("input[name='title']").hide();
+      $('#stu').text('Student').show();
+      $('#depts').hide();
+      $('#years').hide();
+      $("#yr").hide();
+      $('#from').show();
+      $('#to').show();
+      $('#att').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $('#sub').hide();
+      $('#subss').hide();
+      $("#yer").hide();
+      $("#agency").hide();
+      $("#agent").hide();
+      $('#staff').text('Staff').show();
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").show(); // Show the input box
+      $("input[name='rad1']").show();
+      $('#staffs').text('Title').hide();
+      $("input[name='staffs']").hide();// Show the input box
+      $('#stus').text('Title').hide();
+      $("input[name='student']").hide(); // Show the input box
+   
+    } else if (selectedValue == 'workshop') {
+      $('#journal_label').text('Presented/submitted:');
+      $('#titel').hide();
+      $("input[name='title']").hide();
+      $('#stu').text('student').show();
+      $('#staff').text('staff').show();
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").prop('checked', false);
+      $("input[name='rad1']").show(); // Show the input box
+      $("input[name='rad1']").show();
+      $('#from').show();
+      $('#to').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $('#staffs').text('Title').hide();
+      $('#att').show();
+      $('#depts').hide();
+      $('#sub').hide();
+      $('#subss').hide();
+      $('#years').hide();
+      $("#yr").hide();
+      $("#agency").hide();
+      $("#agent").hide();
+      $("#yer").hide();
+      $("input[name='staffs']").hide();// Show the input box
+      $('#stus').text('Title').hide();
+      $("input[name='student']").hide(); // Show the input box
+    }
+    $("input[name='rad1']").change(function() {
+        var radioValue = $(this).val();
+        if(radioValue=="student"){
+          
+          $('#stus').text('No of student attended').show();
+      $("input[name='student']").show();
+      $('#staffs').text('Title').hide();
+      $('#from').show();
+      $('#to').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $("input[name='staffs']").hide();
+      $('#depts').show();
+      $('#years').show();
+      $("#agency").hide();
+      $("#agent").hide();
+      $("#yr").show();
+      $("#yer").show();
+        }
+        else{
+          $('#staffs').text('No of staff attended').show();
+      $("input[name='staffs']").show();
+      $('#stus').text('Title').hide();
+      $("#agency").hide();
+      $("#agent").hide();
+      $("input[name='student']").hide();
+      $('#depts').hide();
+      $('#years').hide();
+      $("#yr").hide();
+      $('#from').show();
+      $('#to').show();
+      $('#from_date').show();
+      $('#to_date').show();
+      $("#yer").hide();
+        }
+    });
+  });
+    $("#submited").click(function(event){
+      event.preventDefault();
+      var slected=document.getElementsByName("names")[0];
+      var sel=slected.value;
+      var event_name=$("input[name='journal']").val();
+      var event_title=$("input[name='title']").val();
+      var event_host=$("input[name='host']").val();
+      var from_date=$("input[name='from_date']").val();
+      var sub=$("input[name='subs']").val();
+      var amount=$("input[name='amount']").val();
+      var to_date=$("input[name='to_date']").val();
+      var file=$("#file_inputs").prop('files')[0];
+      var radios = $('input[name="rad1"]:checked').val();
+      var total_no_stu=$("input[name='student']").val();
+      var tot=$("input[name='staffs']").val();
+      var slected1=document.getElementsByName("year")[0];
+      var sel1=slected1.value;
+
+      var slected2=document.getElementsByName("dept")[0];
+      var sel2=slected2.value;
+        formdata=new FormData();
+        formdata.append('names',sel);
+        formdata.append('journal',event_name);
+        formdata.append('title',event_title);
+        formdata.append('host',event_host);
+        formdata.append('from_date',from_date);
+        formdata.append('to_date',to_date);
+        formdata.append('file_input',file);
+        formdata.append('rad1',radios);
+        formdata.append('student',total_no_stu);
+        formdata.append('year',sel1);
+        formdata.append('dept',sel2);
+        formdata.append('staffs',tot);
+        formdata.append('subs',sub);
+        formdata.append('amount',amount);
+        $.ajax({
+          type:"POST",
+          data:formdata,
+          url:"/staff_ups/",
+          contentType:false,
+          processData:false,
+          success:function(data){
+            if(data.message){
+              alert(data.message);
+            }
+          },
+          error: function(){
+            alert("please contact admin");
+          }
+        });
+      });
+    });
+</script>
+
+</script>
+
+
+</body>
+</html>

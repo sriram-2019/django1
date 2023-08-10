@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Date Range Input</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      form {
+        width: 400px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 5px;
+      }
+
+      label {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      input[type="date"],
+      select {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+      #logout-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      #logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: rgb(250, 8, 8);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button id="logout-btn" onclick="location.href='/logout/'">Home</button>
+      <form>
+        {% csrf_token %}
+        <h1>Select Date </h1>
+
+        <label for="from-date-input">From:</label>
+        <input type="date" id="from-date-input" name="from-date">
+
+        <label for="to-date-input">To:</label>
+        <input type="date" id="to-date-input" name="to-date">
+
+       
+
+        <button type="submit" name="select" id="selected">Submit</button>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+          $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+          });
+          $("#selected").click(function(event){
+              event.preventDefault();
+              from_date=$('input[name="from-date"]').val();
+              to_date=$('input[name="to-date"]').val();
+              if(from_date==''||to_date==''){
+                alert("please fill all field");
+              }
+              else{
+                $.ajax({
+                  type:"POST",
+                  url:"/d/",
+                  data:$('form').serialize(),
+                  success: function(data){
+                    if(data){
+                  // redirect to another HTML page with the 'from' value as a query parameter
+                  window.location.href = 'll.html?from=' + data.from + '&to=' + data.to;
+                }                    
+                  },
+                  error: function(){
+                    alert("please contact admin");
+                  }
+                });
+              }
+          });
+              
+      });
+    </script>
+  </body>
+</html>

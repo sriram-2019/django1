@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assess Marks Form</title>
+  <style>
+    h1 {
+      text-align: center; /* Center the heading */
+    }
+   
+    form {
+      width: 500px;
+      margin: 0 auto;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    
+    label {
+      display: inline-block;
+      width: 150px;
+      margin-bottom: 10px;
+    }
+    
+    input[type="number"] {
+      width: 80px;
+    }
+    
+    select {
+      width: 200px;
+      height: 30px;
+      margin-bottom: 10px;
+    }
+    
+    input[type="submit"] {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #3e8e41;
+    }
+    
+    .logout-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: rgb(245, 4, 4);
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .column {
+      flex-basis: 30%;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="location.href='/logouts/staff_re'" class="logout-btn">Home</button>
+  <h1>Enter the Student Mark Detail</h1>
+  <form method="POST">
+    {% csrf_token %}
+    
+    <label for="reg_no">Register No</label>
+    <input type="text" id="reg_no" name="reg_nos" placeholder="Enter registration number of student" >
+    <br>
+    <label for="semester">Select a semester:</label>
+    <select id="semester" name="semester">
+      <option value="1">Semester 1</option>
+      <option value="2">Semester 2</option>
+      <option value="2">Semester 3</option>
+      <option value="1">Semester 4</option>
+      <option value="2">Semester 5</option>
+      <option value="2">Semester 6</option>
+      <option value="2">Semester 7</option>
+      <option value="2">Semester 8</option>
+    </select>
+    <br>
+    <label for="subject">Select a subject:</label>
+    <input type="text" name="sub_name" placeholder="Enter subject name" >
+    <br>
+    
+    <br>
+    <div class="row">
+      <div class="column">
+        <label for="mark3">Asses Mark 1:</label>
+        <input type="number" id="mark1" name="amark1" placeholder="*optional" min="0" max="100">
+      </div>
+      <div class="column">
+        <label for="mark3">Asses mark 2:</label>
+        <input type="number" id="mark2" name="amark2" placeholder="*optional" min="0" max="100">
+      </div>
+      <div class="column">
+        <label for="mark3">Asses mark 3:</label>
+        <input type="number" id="mark3" name="amark3" placeholder="*optional" min="0" max="100">
+      </div>
+    </div>
+    <br>
+    </div>
+    <br>
+    <input type="submit" id="submit-btn" value="Submit">
+    <input type="submit" id="submits" value="previous data">
+    <input type="submit" value="View Data Table" name="res" id="sub">
+  </form>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#submit-btn').click(function(e) {
+        e.preventDefault(); // Prevent the form from being submitted normally
+    
+        // Serialize the form data into a query string
+        $.ajax({
+          url: '/save_assess/', // The URL to the Django view function
+          type: 'POST',
+          data: $('form').serialize(),
+          success: function(data) {
+            console.log(data); // Log the server response to the console
+            alert('Data saved successfully!');
+          },
+          error: function(xhr, status, error) {
+            console.log(xhr.responseText); // Log any errors to the console
+            alert('Error saving data!');
+          }
+        });
+      });
+      $('#submits').click(function(e){
+          e.preventDefault();
+          var reg= $('input[name="reg_nos"]').val();
+          var sub=$('input[name="sub_name"]').val();
+          if(reg==''){
+            alert("please fill the register no of student");
+          }
+          else if(sub==''){
+            alert('please fill the subject name ');
+          }
+          else{
+          $.ajax({
+            url:'/prevs1/',
+            type:'POST',
+            data:$('form').serialize(),
+            success:function(data){
+              $('#mark1').val(data.p.assessment1);
+        $('#mark2').val(data.p.assessment2);
+        $('#mark3').val(data.p.assessment3);
+            }
+          });
+        }
+        });
+    });
+  </script>
+</body>
+</html>

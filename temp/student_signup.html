@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Sign-up</title>
+
+    <link rel="stylesheet" type="text/css"
+        href="{%   static 'C:/Users/srira/OneDrive/Desktop/college/css/signup.css' %}" />
+</head>
+
+<body onload="disp();">
+    <div class="container">
+        <h1 id="greeting"></h1>
+        <form class="form" action="#" method="POST" autocomplete="off" name="register">
+            {% csrf_token %}
+            <div class="inputFields">
+                <input type="text" placeholder="Enter your name" name="user">
+                <small id="alert1">*Enter valid name</small>
+                <input type="text" placeholder="Enter your roll number" name="roll">
+                <small id="alert2">*Enter valid roll number</small>
+                <input type="password" placeholder="Enter password" name="password">
+                <small id="passalert">*Enter valid password</small>
+                <select id="dept" name="dept" required>
+                    <option value="cse">CSE</option>
+                    <option value="ece">ECE</option>
+                    <option value="eee">EEE</option>
+                    <option value="it">IT</option>
+                    <option value="mech">MECH</option>
+                    <option value="civil">CIVIL</option>
+                </select>
+                <select id="year" name="year" required>
+                    <option value="1">First Year</option>
+                    <option value="2">Second Year</option>
+                    <option value="3">Third Year</option>
+                    <option value="4">Fourth Year</option>
+                </select>
+                <input type="text" placeholder="Enter mobile number without (+91)" maxlength="10" name="mobile">
+                <small id="alert3">*Enter valid mobile number</small>
+                <input type="email" placeholder="Enter your email-id" name="email">
+                <small id="alert4">*Enter valid email address</small>
+                <div>
+                    <label for="dob">Enter your date of birth:</label>
+                    <input type="date" id="dob" placeholder="Enter date-of-birth" name="dob">
+                </div>
+                <small id="selAlert">*Select your DOB</small>
+                <input type="text" placeholder="Enter your permanent address" name="address">
+                <small id="alert5">*Address required</small>
+                <input type="text" placeholder="Enter your Batch -y(eg:2020-2024) " name="school">
+                <small id="alert6">*School name required</small>
+                <div>
+                    <label for="qualification">Select your qualification:</label>
+                    <select name="qualify" onchange="show(this);" name="select">
+                        <option value="select">--Select--</option>
+                        <option value="poly">Polytechnic</option>
+                        <option value="twelve">12th standard</option>
+                    </select><br />
+                    <small id="qualifyAlert">*Qualification required</small>
+                    <br />
+                </div>
+
+                <input type="text" placeholder="Enter CGPA(if Polytechnic)" maxlength="10" name="poly">
+                <input type="text" placeholder="Enter 10th marks" maxlength="10" name="10th">
+                <input type="text" placeholder="Enter 12th marks" maxlength="10" name="12th">
+                <input type="text" placeholder="Enter 12th cut-off" maxlength="10" name="cutoff">
+
+                <button type="submit" name="mysub" id="mysub">Submit</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#mysub').click(function (event) {
+            event.preventDefault();
+            var username = $('input[name="user"]').val();
+            var password = $('input[name="password"]').val();
+            var mobile = $('input[name="mobile"]').val();
+            var email = $('input[name="email"]').val();
+            var rollnos = $('input[name="roll"]').val();
+            var rollno=rollnos.toLowerCase()
+            var school = $('input[name="school"]').val();
+            var address = $('input[name="address"]').val();
+            var dob = $('input[name="dob"]').val();
+            var selectElement = document.getElementsByName('qualify')[0];
+            var selectedValue = selectElement.value;
+            var tenth = $('input[name=10th]').val();
+            var twelve = $('input[name=12th]').val();
+            var cutoff = $('input[name=cutoff]').val();
+            var poly = $('input[name=poly]').val();
+            var selectElement = document.getElementsByName('dept')[0];
+            var dept = selectElement.value;
+            var selectElement = document.getElementsByName('year')[0];
+            var year = selectElement.value;
+            const res=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var t=res.test(email);
+            if (username == '') {
+                alert('Please enter a username');
+
+            }
+            else if (rollno == '' ) {
+                alert("Please enter a roll no start with 20cse");
+            }
+            else if (password == '') {
+                alert("Please enter a password with lenght greater than 6");
+            }
+            else if (password.length < 3) {
+                alert("Please enter a password with lenght greater than 6");
+            }
+
+            else if (mobile == '') {
+                alert("Please enter a mobile no without +91");
+            }
+            else if (isNaN(mobile) || mobile.length!=10) {
+                alert("mobile number must be numeric or should be 10 digit ");
+            }
+            else if (email == ''||!t) {
+                alert(" email field must not be empty or enter the correct format");
+            }
+            else if (dob == '') {
+                alert("Please enter a date of birth");
+            }
+            else if (address == '') {
+                alert("Please enter the permanent address");
+            }
+            else if (school == '') {
+                alert("Please enter a school name");
+            }
+            else if (selectedValue == "twelve" &&(twelve=='' || tenth==' ' || cutoff=='')) {
+                alert("please enter 10th 12th cuttoff value");
+            }
+            else if (selectedValue == 'poly' &&(poly=='')) {
+                alert('enter the cgpa field if polytechnic');
+        }
+        
+            else {
+                alert("registered successfully");
+                $.ajax({
+                    type: 'POST',
+                    url: '/sucess/',
+                    data: $('form').serialize(),
+                    success: function (response) {
+                        // 
+                    },
+                    error: function () {
+                        alert('There was an error submitting the form');
+                    }
+                });
+            }
+        });
+    });
+    function disp() {
+        let hour = new Date().getHours();
+        let disp = document.getElementById("greeting");
+        if (hour >= 6 && hour < 12)
+            disp.innerHTML = "GOOD MORNING";
+        else if (hour >= 12 && hour < 17)
+            disp.innerHTML = "GOOD AFTERNOON";
+        else if (hour >= 17 && hour < 20)
+            disp.innerHTML = "GOOD EVENING";
+        else
+            disp.innerHTML = "Welcome for registration";
+    }
+</script>
+</body>
+
+</html>

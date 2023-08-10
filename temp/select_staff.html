@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Department and Year Form</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        input[type=text] {
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            width: 300px;
+        }
+
+        select {
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            width: 300px;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0062cc;
+        }
+        #logout-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgb(253, 2, 2);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#logout-btn:hover {
+    background-color: #222;
+}
+    </style>
+</head>
+<body>
+    <button  onclick="location.href='/logouts/staff_re'" id="logout-btn">Home</button>
+
+    <h1>Enter Students Department and Year</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="dept">Department:</label>
+        <select id="dept" name="dept" required>
+            <option value="cse">CSE</option>
+            <option value="ece">ECE</option>
+            <option value="eee">EEE</option>
+            <option value="it">IT</option>
+            <option value="mech">MECH</option>
+            <option value="mech">CIVIL</option>
+        </select>
+        <label for="year">Year:</label>
+        <select id="year" name="year" required>
+            <option value="1">First Year</option>
+            <option value="2">Second Year</option>
+            <option value="3">Third Year</option>
+            <option value="4">Fourth Year</option>
+        </select>
+        
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            });
+            $('.submit-btn').click(function(event){
+                event.preventDefault();
+                var selectElement = document.getElementsByName('dept')[0];
+                var dept = selectElement.value;
+                var selectElement = document.getElementsByName('year')[0];
+                var year = selectElement.value;
+                var academic=$('input[name="acad"').val();
+                    $.ajax({
+                        type:'POST',
+                        url:'/student_cert/',
+                        data:{
+                            'dept':dept,
+                            'year':year,
+                            'aca':academic
+                        },
+                        success:function(response){
+                            window.location.href='student_download';
+                        },
+                        error:function(){
+                            alert("please contact administrator");
+                        }
+                    });
+                
+            });
+        });
+    </script>
+</body>
+</html>
